@@ -1,4 +1,4 @@
-#!~/.conda/envs/rothon/bin/python
+#!/usr/bin/env python
 
 ## USAGE :: python scriptname.py -i infile.name -o outfile.name
 ## This script is to convert this file: https://www.genome.jp/kegg-bin/get_htext?ko00001.keg

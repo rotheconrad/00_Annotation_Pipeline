@@ -1,4 +1,4 @@
-#!~/.conda/envs/rothon/bin/python
+#!/usr/bin/env python
 
 ## USAGE :: python scriptname.py uniprot_trembl.dat
 ## Reads UniProt dat file and returns a tsv of ID Gene_Name DR_Predictions KW_Predictions

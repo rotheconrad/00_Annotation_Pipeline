@@ -138,9 +138,9 @@ The 04a_Combine_Annotations.py script is used to combine results from two or thr
 
 *Not all genes recieve a gene annotation passing the filters. Some genes may get an annotation from only one database or two databases and some may get an annotation from all three. This script writes outputs for these genes in case you would like to explore them further. Otherwise you can ignore these files*
 
-    * single files contain genes with an annotation result from only one database
-    * double files contain genes with annotation results from two databases
-    * triple files contain genes with annotation results from all three databases
+* single files contain genes with an annotation result from only one database
+* double files contain genes with annotation results from two databases
+* triple files contain genes with annotation results from all three databases
 
 ```bash
 python 04a_Combine_Annotations.py -spb Step03_SwissProt_Annotations.tsv -kfs Step03_KEGG_Annotations.tsv -trb Step03_TrEMBL_Annotations.tsv -o Step04a_Combined_Annotations.tsv
@@ -201,8 +201,8 @@ Example plot:
 
 This step uses the same Gene_Types_Lists.txt from Step 06 above but plots results for a single database as a stacked bar plot for one or more MAGs, genomes, or metagenomes. This annotation pipeline can be run multiple times with different input amino acid sequence fasta files for each MAG, genome, or metagenome and the results from Step 04b using a single database can be input into 07a_CompareSequences_Annotation_Results.py. 
 
-    * -i can be a single file or a list of files from Step04b_Annotations_plusHypotheticals.tsv
-    * dbused should be one of KEGG TrEMBL SwissProt that you used for Step 03. The same database must be used for all files input with -i.
+* -i can be a single file or a list of files from Step04b_Annotations_plusHypotheticals.tsv
+* dbused should be one of KEGG TrEMBL SwissProt that you used for Step 03. The same database must be used for all files input with -i.
 
 ```bash
 python 07a_CompareSamples.py -i file1 file2 file3 filen -l Gene_Types_List.txt -d {dbused} -o {outfile_name}

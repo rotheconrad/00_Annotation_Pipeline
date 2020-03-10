@@ -110,6 +110,8 @@ def Plot_Annotation_Summary(df, gene_legend, legend_color, legend_columns, out):
     # Select colors to use. User defined or default.
     if len(legend_color) > 0:
         colors = legend_color
+        # append color for other category
+        colors.append('#d9d9d9')
     else:
         colors = [
             '#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c',

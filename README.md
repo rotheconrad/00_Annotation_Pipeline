@@ -166,25 +166,25 @@ python 05a_Transform_Annotation_Results.py -a Step04b_Combined_Annotations_plusH
 
 This step uses a list of desired gene types to count the number of genes of that type and build a stacked bar plot of the results for each database.
 
-Create a list of gene types to count with columns "Legend Name and String to Match" separated by a comma and a space. The file should include the column names.
+Create a list of gene types to count with columns "Legend Name, String to Match, Color" separated by a comma and a space. The file should include the column names. There is a default colorset of 14 colors if you which to leave the color column blank. If you want to choose your own colors, I recomend [Color Brewer](http://colorbrewer2.org/) for help with color palettes.
 
 The plot generating script below reads the list of gene types and performs a string match. Matches are not case sensitive. Use "|" for or to count multiple variations as one type. Each gene is counted only once. Gene will be counted in the first category on the list that it matches.
 
 Example Gene_Types_List.txt
 
-    Legend Name, String to Match
-    Hypothetical, hypothetical
-    Uncharacterized, uncharacterized
-    Transcription, transcriptional|transcription|transcriptase
-    Translation, translation
-    Repair, repair
-    Nuclease, nuclease
-    Transferase, transferase
-    Transposase, transposase
-    Synthase, synthase
-    Integrase, integrase
-    Transport, transport
-    Reductase, reductase
+    Legend Name, String to Match, Color
+    Hypothetical, hypothetical, #a6cee3
+    Uncharacterized, uncharacterized, #1f78b4
+    Transcription, transcriptional|transcription|transcriptase, #b2df8a
+    Translation, translation, #33a02c
+    Repair, repair, #fb9a99
+    Nuclease, nuclease, #e31a1c
+    Transferase, transferase, #fdbf6f
+    Transposase, transposase, #ff7f00
+    Synthase, synthase, #cab2d6
+    Integrase, integrase, #6a3d9a
+    Transport, transport, #ffff99
+    Reductase, reductase, #b15928
 
 *The -c flag is to control the number of columns the legend is displayed with if your gene list gets too long.*
 
@@ -196,6 +196,9 @@ python 06a_CompareDatabases.py -i Step05_transformed_annotation_results.tsv -l G
 
 Example plot:
 ![alt text](06b_Example_plot.png "Example plot.")
+
+Example plot:
+![alt text](06c_Example_plot.png "Example plot.")
 
 ## Step 07: Plot a summary of single database results for one or more MAGs, genomes, or metagenomes.
 

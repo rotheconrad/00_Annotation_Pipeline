@@ -86,7 +86,7 @@ def main():
         )
     parser.add_argument(
         '-a', '--Annotation_file',
-        help='The 03_*_ClstrRepSeq_Annotations_NoMatch.tsv file.',
+        help='The output file from Step 04a through 04b.',
         metavar='',
         type=str,
         required=True

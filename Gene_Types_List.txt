@@ -1,13 +1,13 @@
-Legend Name, String to Match
-Hypothetical, hypothetical
-Uncharacterized, uncharacterized
-Transcription, transcriptional|transcription|transcriptase
-Translation, translation
-Repair, repair
-Nuclease, nuclease
-Transferase, transferase
-Transposase, transposase
-Synthase, synthase
-Integrase, integrase
-Transport, transport
-Reductase, reductase
+Legend Name, String to Match, Color
+Hypothetical, hypothetical, #a6cee3
+Uncharacterized, uncharacterized, #1f78b4
+Transcription, transcriptional|transcription|transcriptase, #b2df8a
+Translation, translation, #33a02c
+Repair, repair, #fb9a99
+Nuclease, nuclease, #e31a1c
+Transferase, transferase, #fdbf6f
+Transposase, transposase, #ff7f00
+Synthase, synthase, #cab2d6
+Integrase, integrase, #6a3d9a
+Transport, transport, #ffff99
+Reductase, reductase, #b15928

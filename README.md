@@ -211,4 +211,7 @@ python 07a_CompareSamples.py -i file1 file2 file3 filen -l Gene_Types_List.txt -
 Example plot:
 ![alt text](07b_Example_plot.png "Example plot.")
 
+Example plot:
+![alt text](07c_Example_plot.png "Example plot.")
+
 

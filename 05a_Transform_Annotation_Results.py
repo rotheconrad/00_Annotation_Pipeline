@@ -2,22 +2,10 @@
 
 '''Transform Annotations Results.
 
-This script takes the combined annotations results including the NoMatch
-from the 3 databases TrEMBL, SwissProt, and KEGG and transform the tsv
-table in preparation for use with Python Pandas and plotting.
-
-This tool takes the following input files:
-
-    * 03_*_ClstrRepSeq_Annotations_NoMatch.tsv
-
-This script returns the following files:
-
-    * tsv file with transformed tsv table.
-
-This script requires the following packages:
-
-    * argparse 
-    * collections.defaultdict
+This script takes the combined annotations results from Step 04a that 
+have had the un-annotated genes added as Hypothetical Genes and 
+transforms the combined tsv table in preparation to use with Pandas in
+Python for plotting a summary of string matched Gene Types in Step 06.
 
 -------------------------------------------
 Author :: Roth Conrad
@@ -44,8 +32,8 @@ def gather_ano(file):
         _ = f.readline()
         for l in f:
             X = l.rstrip().split('\t')
-            db = X[0]
-            gnm = X[1]
+            gnm = X[0]
+            db = X[1]
             uid = X[2]
             if uid == 'n/a': uid = 'No_Match'
             annotation = X[7]
@@ -53,23 +41,29 @@ def gather_ano(file):
             if ko == 'n/a': ko = 'No_Match'
             if db == 'TrEMBL' or db == 'SwissProt':
                 d[gnm].extend([uid, annotation, ko])
-            elif db == 'KofamScan':
+            elif db == 'KEGG':
                 d[gnm].extend([annotation, ko])
 
     return d
 
 
-def combine_results(ano, out):
+def combine_results(ano, dbused, out):
     """ preocesses files and outputs combined results to tsv """
 
     # Parse the input file
-    # {RepSeqName: [U-ID,TrEMBL,T-KO,U-ID,SwissProt,S-KO,KEGG,K-KO]}
     ano_dict = gather_ano(ano)
 
-    # Set the output header
-    header = (
-        'RepSeqName\tU-ID\tTrEMBL\tT-KO\tKEGG\tK-KO\tU-ID\tSwissProt\tS-KO'
-         )
+    # Define header segments for each database.
+    header_dict = {
+                'TrEMBL': '\tU-ID\tTrEMBL\tT-KO',
+                'SwissProt': '\tU-ID\tSwissProt\tS-KO',
+                'KEGG': '\tKEGG\tK-KO'
+                }
+    # Initialize the header string
+    header = 'RepSeqName'
+    # Build the header string
+    for db in dbused:
+        header = header + header_dict[db]
 
     # Write new file
     with open(out, 'w') as o:
@@ -95,7 +89,15 @@ def main():
         help='The 03_*_ClstrRepSeq_Annotations_NoMatch.tsv file.',
         metavar='',
         type=str,
-        #required=True
+        required=True
+        )
+    parser.add_argument(
+        '-d', '--databases_used',
+        help='Please specify which databases you used: KEGG TrEMBL SwissProt',
+        metavar='',
+        type=str,
+        nargs='+',
+        required=True
         )
     parser.add_argument(
         '-o', '--out_file',
@@ -110,6 +112,7 @@ def main():
     print('Running Script...')
     combine_results(
                         args['Annotation_file'],
+                        args['databases_used'],
                         args['out_file']
                         )
 

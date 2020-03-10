@@ -1,0 +1,13 @@
+Legend Name, String to Match
+Hypothetical, hypothetical
+Uncharacterized, uncharacterized
+Transcription, transcriptional|transcription|transcriptase
+Translation, translation
+Repair, repair
+Nuclease, nuclease
+Transferase, transferase
+Transposase, transposase
+Synthase, synthase
+Integrase, integrase
+Transport, transport
+Reductase, reductase

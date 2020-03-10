@@ -49,17 +49,17 @@ def write_file(entry, o):
     """ Writes the output file of combined annotations. """
 
     for i in entry:
-        if i.split('\t')[0] == 'KofamScan':
+        if i.split('\t')[1] == 'KEGG':
             X = i.rstrip().split('\t')
-            db = X[0]
-            nm = X[1]
+            db = X[1]
+            nm = X[0]
             KO = X[2]
             thrshld = X[3]
             score = X[4]
             Evalue = X[5]
             KOdef = X[6]
             i = (
-                f'{db}\t{nm}\tn/a\tn/a\t{thrshld}\t{score}\t'
+                f'{nm}\t{db}\tn/a\tn/a\t{thrshld}\t{score}\t'
                 f'{Evalue}\t{KOdef}\tn/a\t{KO}\tn/a\n'
                 )
             
@@ -84,8 +84,8 @@ def triple(name, entry, td, cd, header, basename):
 
 def double(name, entry, td, cd, header, basename):
     """ Parses annotations with results from two databases. """
-    db1 = entry[0].split('\t')[0]
-    db2 = entry[1].split('\t')[0]
+    db1 = entry[0].split('\t')[1]
+    db2 = entry[1].split('\t')[1]
     cd[f'{db1}_{db2} Double Annotation'] += 1
 
     subname = f'{basename}_doubles.tsv'
@@ -103,7 +103,7 @@ def double(name, entry, td, cd, header, basename):
 
 def single(name, entry, td, cd, header, basename):
     """ Parses annotations with result from a single database only. """
-    db = entry[0].split('\t')[0]
+    db = entry[0].split('\t')[1]
     cd[f'{db} Single Annotation'] += 1
 
     subname = f'{basename}_singles.tsv'
@@ -125,8 +125,10 @@ def gather_data(file, dbname, d):
     with open(file, 'r') as f:
         _ = f.readline()
         for l in f:
-            nm = l.split('\t')[0]
-            d[nm].append(f'{dbname}\t{l}')
+            X = l.split('\t')
+            nm = X[0]
+            remaining_line = '\t'.join(X[1:])
+            d[nm].append(f'{nm}\t{dbname}\t{remaining_line}')
 
     return d
 
@@ -155,11 +157,11 @@ def compare_annotations(trembl, sprot, kofamscan, outfile):
     """
 
     # Build dictionary with gene names as keys and values as a list of
-    # the annotation line from each database method
+    # the annotation line from each database method provided.
     d = defaultdict(list)
-    d = gather_data(trembl, 'TrEMBL', d)
-    d = gather_data(sprot, 'SwissProt', d)
-    d = gather_data(kofamscan, 'KofamScan', d)
+    if trembl: d = gather_data(trembl, 'TrEMBL', d)
+    if sprot: d = gather_data(sprot, 'SwissProt', d)
+    if kofamscan: d = gather_data(kofamscan, 'KEGG', d)
 
     # Read through the dictionary, write out a new combined annotation
     # file, compute the comparisons, and output comparisions results
@@ -168,12 +170,13 @@ def compare_annotations(trembl, sprot, kofamscan, outfile):
     triple_d = {}
     count_d = defaultdict(int)
 
+    # open the output file
     with open(outfile, 'w') as o:
 
         basename = outfile.split('.')[0]
 
         header = (
-            f'DataBase\tGene_Name\tUniprot_ID\tPercent_Match\t'
+            f'Gene_Name\tDataBase\tUniprot_ID\tPercent_Match\t'
             f'Alignment_Length/thrshld\tQuery_Length/score\t'
             f'Subject_Length/Evalue\tLong_Gene_Name\tShort_Gene_Name\t'
             f'KO\tInterPro\tPfam\tCOGG(eggNOG)\tGO_F\tGO_CAnnotations\t'
@@ -183,17 +186,17 @@ def compare_annotations(trembl, sprot, kofamscan, outfile):
         _ = o.write(header)
 
         for k,v in d.items():
-
+            # if gene has annotation from only 1 database
             if len(v) == 1:
                 single_d, count_d = single(
                                     k, v, single_d, count_d, header, basename
                                     )
-
+            # if gene has annotation from two databases
             elif len(v) == 2:
                 double_d, count_d = double(
                                     k, v, double_d, count_d, header, basename
                                     )
-
+            # if gene has annotation from three databases
             elif len(v) == 3:
                 triple_d, count_d = triple(
                                     k, v, triple_d, count_d, header, basename

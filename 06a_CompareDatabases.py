@@ -27,16 +27,17 @@ matplotlib.use('agg')
 import matplotlib.pyplot as plt
 import pandas as pd
 
-def get_summaries(infile, gene_list, out):
+def get_summaries(infile, gene_list, dbs, out):
     """ Read input table and generate counts """
 
     data = defaultdict(list)
 
     df = pd.read_csv(infile, sep='\t', index_col=0)
 
-    dbs = ['KEGG', 'TrEMBL', 'SwissProt']
+    #dbs = ['KEGG', 'TrEMBL', 'SwissProt']
     gene_legend = []
     gene_match = []
+    legend_color = []
 
     # gn is also the row names or index
     # This is a list of key words to look for in the gene annotations
@@ -46,6 +47,7 @@ def get_summaries(infile, gene_list, out):
             X = l.rstrip().split(', ')
             gene_legend.append(X[0])
             gene_match.append(X[1])
+            if len(X) == 3: legend_color.append(X[2])
     gene_legend.append('Other Genes')
 
     gene_counts = open(f'{out}_gene_counts.tsv', 'w')
@@ -95,18 +97,23 @@ def get_summaries(infile, gene_list, out):
     ### Convert Dictionaries to DataFrames ####
     df = pd.DataFrame.from_dict(data, orient='index', columns=dbs)
 
-    return df, gene_legend
+    return df, gene_legend, legend_color
 
 
-def Plot_Annotation_Summary(df, gene_legend, legend_columns, out):
+def Plot_Annotation_Summary(df, gene_legend, legend_color, legend_columns, out):
     """ Plot Stacked Bar Charts by PanCats for each DB """
 
-    colors = [
-        #'#a6cee3','#b2df8a','#fb9a99','#8c510a','#ff7f00','#6a3d9a','#b15928',
-        #'#1f78b4','#33a02c','#e31a1c','#fdbf6f','#cab2d6','#ffff99','#01665e'
-        '#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c', '#8c510a',
-        '#fdbf6f','#ff7f00','#cab2d6','#6a3d9a','#ffff99','#b15928', '#01665e'
-            ]
+    print('\n\nBuilding the plot...')
+
+    # Select colors to use. User defined or default.
+    if len(legend_color) > 0:
+        colors = legend_color
+    else:
+        colors = [
+            '#a6cee3','#1f78b4','#b2df8a','#33a02c','#fb9a99','#e31a1c',
+            '#8c510a','#fdbf6f','#ff7f00','#cab2d6','#6a3d9a','#ffff99',
+            '#b15928','#01665e'
+                ]
 
     normed_df = df.div(df.sum(axis=0), axis=1)
 
@@ -158,47 +165,60 @@ def main():
         help='The Transformed Annotation  file from previous step.',
         metavar='',
         type=str,
-        #required=True
+        required=True
         )
     parser.add_argument(
         '-l', '--gene_types_list',
         help='List of gene types to string match.',
         metavar='',
         type=str,
-        #required=True
+        required=True
+        )
+    parser.add_argument(
+        '-d', '--databases_used',
+        help='Please specify which databases you used: KEGG TrEMBL SwissProt',
+        metavar='',
+        type=str,
+        nargs='+',
+        required=True
         )
     parser.add_argument(
         '-c', '--legend_columns',
-        help='Number of columns for the legend.',
+        help='(Optional) Number of columns for the legend (Default=1).',
         metavar='',
         type=int,
-        #required=True
+        default=1
         )
     parser.add_argument(
         '-o', '--out_file',
         help='What do you want to name the output file?',
         metavar='',
         type=str,
-        #required=True
+        required=True
         )
     args=vars(parser.parse_args())
 
     # Do what you came here to do:
-    print('\n\nRunning Script...\n\n')
+    print('\n\nRunning Script...')
 
-    df, gene_legend = get_summaries(
-                args['transformed_annotation_file'],
-                args['gene_types_list'],
-                args['out_file']
-                )
+    # Read in the files and build a dataframe df of gene types counts.
+    df, gene_legend, legend_color = get_summaries(
+                                args['transformed_annotation_file'],
+                                args['gene_types_list'],
+                                args['databases_used'],
+                                args['out_file']
+                                )
 
+    # Build the plot
     Plot_Annotation_Summary(
                         df,
                         gene_legend,
+                        legend_color,
                         args['legend_columns'], 
                         args['out_file']
                         )
 
+    print('\nLooks like the script finished successfully!\n\n')
 
 if __name__ == "__main__":
     main()

@@ -202,6 +202,7 @@ Example plot:
 This step uses the same Gene_Types_Lists.txt from Step 06 above but plots results for a single database as a stacked bar plot for one or more MAGs, genomes, or metagenomes. This annotation pipeline can be run multiple times with different input amino acid sequence fasta files for each MAG, genome, or metagenome and the results from Step 04b using a single database can be input into 07a_CompareSequences_Annotation_Results.py. 
 
 * -i can be a single file or a list of files from Step04b_Annotations_plusHypotheticals.tsv
+* The plot uses the filename as x-axis labels so if you label the Step04b output as SampleName.tsv or MAG_name.tsv the labels will look good.
 * dbused should be one of KEGG TrEMBL SwissProt that you used for Step 03. The same database must be used for all files input with -i.
 
 ```bash

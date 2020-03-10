@@ -10,7 +10,15 @@ All of the Python scripts in this repository are written for Python version 3.6+
 python scriptname.py -h
 ```
 
-## Step 00: Required tools :: Blast+ (Blastp) and Kofamscan.
+## Step 00: Required tools :: Python 3.6+, Blast+ (Blastp) and Kofamscan.
+
+### Python 3.6+ for running the Python scripts in this repo.
+
+Information for installing and running Python can be found [here](https://www.python.org/). I recommend installing [mini conda](https://docs.conda.io/en/latest/miniconda.html) first and then creating an environment for Python 3.6+ and other tools for the project at hand.
+
+*All Python scripts in this repo were written for Python 3.6+. If you get a syntax error the first time you run a script, please first check your Python version.*
+
+### Kofamscan
 
 Kofamscan and hmm databases can be downloaded from the Download section of [this
 page](https://www.genome.jp/tools/kofamkoala/).
@@ -24,6 +32,8 @@ conda create -n kofamscan hmmer parallel
 conda activate kofamscan
 conda install -c conda-forge ruby
 ```
+
+### Blast+
 
 Installation Details for Blast+ can be found [here](https://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE_TYPE=BlastDocs&DOC_TYPE=Download).
 

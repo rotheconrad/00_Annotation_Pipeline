@@ -91,7 +91,9 @@ The TrEMBL database is large and can take a really long time to search against. 
 
 The SwissProt database is much smaller and is more tractable without access to a computer cluster. If you do not have cluster access we recommened to skip the TrEMBL database and explore only SwissProt and KEGG.
 
-Blastp can be run similar to this (the -outfmt 6 format order is required for downstream processing):
+If using Blast+, the Blastp algorithm can be run similar to this:
+
+*(the custom -outfmt 6 format order with added query length and sequence length in columns 13 and 14 is **required** for filtering of downstream results.)*
 
 ```bash
 blastp -task 'blastp' -evalue 0.01 -max_target_seqs 10 -num_threads 2 -db {pathto_db} -query {input_fasta} -out {outfile_name} -outfmt '6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qlen slen'

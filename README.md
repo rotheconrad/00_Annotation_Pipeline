@@ -33,7 +33,7 @@ conda activate kofamscan
 conda install -c conda-forge ruby
 ```
 
-### Blast+
+### Blast+ or Diamond
 
 Installation Details for Blast+ can be found [here](https://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE_TYPE=BlastDocs&DOC_TYPE=Download).
 
@@ -43,6 +43,16 @@ Or Blast+ can be easily installed using a [conda environment](https://docs.conda
 conda create -n blastplus
 conda activate blastplus
 conda install bioconda::blast=2.7.1 conda-forge::gnutls conda-forge::nettle
+```
+
+Installation Details for Diamond can be found [here](https://github.com/bbuchfink/diamond) or [here](http://www.diamondsearch.org/index.php). The publication can be found [here](https://www.nature.com/articles/nmeth.3176).
+
+Or Diamond can be easily installed using a [conda environment](https://docs.conda.io/en/latest/miniconda.html):
+
+```bash
+conda create -n diamond
+conda activate diamond
+conda install -c bioconda diamond
 ```
 
 ## Step 01: Download and parse databases.
@@ -75,7 +85,7 @@ python 01a_Parse_UniProtDBs_datFile.py -i uniprot_trembl.dat -o  uniprot_trembl.
 
 For this step you need genes / proteins as amino sequences in fasta format for the input_fasta file. The [Prodigal](https://github.com/hyattpd/prodigal/wiki/introduction) tool can be used to predict genes and write the sequence as amino acids in fasta format if you do not already have genes sequences to annotate.
 
-#### Blastp (Diamond or Sword should also work).
+#### Blastp with Blast+ or Diamond (Sword should also work with some adjustments).
 
 The TrEMBL database is large and can take a really long time to search against. Alternative tools such as Diamond or Sword can be used instead of Blastp to speed up the search as long as tabular output is obtained with the qlen (query length) and slen (subject length) columns. Additionally, a computer cluster is highly useful here to run many searches at once. The protein sequence fasta file can be split up into smaller files containing 10 to 50 genes each, and each small file can be run through Blastp using 1 or cores. With the computer cluster you can utilize many cores to run numerous smaller fasta files simultaneously to greatly reduce the time required for sequence searches against the TrEMBL database.
 
@@ -85,6 +95,14 @@ Blastp can be run similar to this (the -outfmt 6 format order is required for do
 
 ```bash
 blastp -task 'blastp' -evalue 0.01 -max_target_seqs 10 -num_threads 2 -db {pathto_db} -query {input_fasta} -out {outfile_name} -outfmt '6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qlen slen'
+```
+
+Running Diamond is very similar:
+
+*(If using diamond, be sure to use diamond for makedb in Step 01 instead of the Blast+ makeblastdb command).*
+
+```bash
+diamond blastp -d uniprot_sprot.fasta.dmnd -q input.faa -o input.dblastp -p 7 --outfmt 6 qseqid sseqid pident length mismatch gapopen qstart qend sstart send evalue bitscore qlen slen
 ```
 
 #### Kofamscan

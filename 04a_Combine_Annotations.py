@@ -223,28 +223,28 @@ def main():
         help='Specify the trembl_cmbnd.blast.best.mtchd file!',
         metavar='',
         type=str,
-        #required=True
+        required=False
         )
     parser.add_argument(
         '-spb', '--SwissProt_best_mtchd_file',
         help='Specify the sprot_cmbnd.blast.best.mtchd file!',
         metavar='',
         type=str,
-        #required=True
+        required=False
         )
     parser.add_argument(
         '-kfs', '--KofamScan_best_mtchd_file',
         help='Specify the kofamscan_results.tsv.best file!',
         metavar='',
         type=str,
-        #required=True
+        required=False
         )
     parser.add_argument(
         '-o', '--out_file',
         help='What do you want to name the output file?',
         metavar='',
         type=str,
-        #required=True
+        required=True
         )
     args=vars(parser.parse_args())
 

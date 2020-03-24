@@ -30,6 +30,8 @@ import pandas as pd
 def get_summaries(infile, gene_list, dbs, out):
     """ Read input table and generate counts """
 
+    print('\n\nHeader: Gene, Raw Count, Percent of Total\n\n')
+
     data = defaultdict(list)
 
     df = pd.read_csv(infile, sep='\t', index_col=0)

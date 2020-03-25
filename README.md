@@ -144,11 +144,6 @@ At this point all the annotation information is in the .tsv files from Step 03. 
 *If you are only working with results from a single database you can skip 04a_Combine_Annotations.py, move on to 04b_Add_Unannotated_Genes.py, bypass Step 05 and 06, and proceed with Step 07 to visualize annotation differences between MAGs, genomes, or metagenomes.*
 
 
-The first thing to know when comparing annotations results, is how many genes did not recieve an annotation above the filters used.
-
-This current step will combine the .tsv files from step 03 and also add to the file any genes that did not recieve an annotation above the thresholds as "Hypothetical Genes".
-
-
 #### If comparing results from two or three databases for a single MAG, genome or metagenome combine annotion results from each database:
 
 The 04a_Combine_Annotations.py script is used to combine results from two or three databases to visualize the differences between databases in Step 05 and 06. If only using two database simply omit the third database when entering the command. This script writes a series of output files:
@@ -174,6 +169,8 @@ When comparing annotations results, it is important to keep track of how many ge
 python 04b_Add_Unannotated_Genes.py -a Annotation_file.tsv -q Original_AminoAcidSequence.fasta -o Step04b_Annotations_plusHypotheticals.tsv -d SwissProt KEGG TrEMBL
 ```
 
+*The database order of the -d flag must be conserved between 04b and 05a or the database labels with be switched*
+
 ## Step 05: Transform combined results file. 
 
 Transform the annotation files. This transformation will make it easier to read the combined annotation file. They are great for exploratory analysis. You can open them with Excel to read through them, or you can read them in as a dataframe with Pandas in Python or with R.
@@ -181,6 +178,8 @@ Transform the annotation files. This transformation will make it easier to read 
 ```bash
 python 05a_Transform_Annotation_Results.py -a Step04b_Combined_Annotations_plusHypotheticals.tsv -o Step05_transformed_annotation_results.tsv -d SwissProt KEGG TrEMBL
 ```
+
+*The database order of the -d flag must be conserved between 04b and 05a or the database labels with be switched*
 
 ## Step 06: Plot a summary of the combined results.
 

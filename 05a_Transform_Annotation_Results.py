@@ -29,7 +29,7 @@ def gather_ano(file):
     d = defaultdict(list)
 
     with open(file, 'r') as f:
-        _ = f.readline()
+        header = f.readline()
         for l in f:
             X = l.rstrip().split('\t')
             gnm = X[0]
